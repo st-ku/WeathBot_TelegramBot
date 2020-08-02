@@ -74,10 +74,10 @@ public class FillingProfileHandler implements InputMessageHandler {
 
             userDataCache.setUsersCurrentBotState(userId, BotState.WELCOME);
 
-            String profileFilledMessage = messagesService.getReplyText("reply.profileFilled");
+
             String predictionMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
 
-            replyToUser = new SendMessage(chatId, String.format("%s%n%n%s ", profileFilledMessage, predictionMessage));
+            replyToUser = new SendMessage(chatId, String.format("%n%s ", predictionMessage));
             replyToUser.setParseMode("HTML");
         }
 

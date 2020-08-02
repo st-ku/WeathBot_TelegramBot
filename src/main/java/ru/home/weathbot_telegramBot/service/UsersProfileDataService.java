@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * Сохраняет, удаляет, ищет анкеты пользователя.
- *
- * @author Sergei Viacheslaev
  */
 @Service
 public class UsersProfileDataService {

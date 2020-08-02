@@ -8,7 +8,6 @@ import java.util.Locale;
 
 /**Работает с файлом шаблоном "ответных сообщений" messages.properties
  *
- * @author Sergei Viacheslaev
  */
 @Service
 public class LocaleMessageService {
