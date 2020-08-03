@@ -9,6 +9,11 @@ import java.util.Arrays;
 
 @Service
 public class WeatherService {
+    private ReplyMessagesService messagesService;
+
+    public WeatherService(ReplyMessagesService messagesService) {
+        this.messagesService = messagesService;
+    }
 
     public String getWeather(String city) {
         return formatWeather(createWeatherObj(city));
@@ -21,7 +26,7 @@ public class WeatherService {
     }
 
     public String formatWeather(FullWeather fullWeather) {
-        String result = String.format("Сейчас в %s %s градусов (ощущается как %s) , %s",fullWeather.getName(),fullWeather.getMain().getTemp(),fullWeather.getMain().getFeels_like(), Arrays.stream(fullWeather.getWeather()).iterator().next().getDescription());
+        String result = String.format(messagesService.getReplyText("reply.weatherPattern1"),fullWeather.getName(),fullWeather.getMain().getTemp(),fullWeather.getMain().getFeels_like(), Arrays.stream(fullWeather.getWeather()).iterator().next().getDescription());
         return result ;
     }
 }

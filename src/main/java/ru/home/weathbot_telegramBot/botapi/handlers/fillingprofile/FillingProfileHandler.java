@@ -72,7 +72,7 @@ public class FillingProfileHandler implements InputMessageHandler {
 
             profileDataService.saveUserProfileData(profileData);
 
-            userDataCache.setUsersCurrentBotState(userId, BotState.WELCOME);
+            userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
 
 
             String predictionMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
