@@ -22,18 +22,10 @@ public class BotConfig {
     private String botUserName;
     private String botToken;
 
-    private DefaultBotOptions.ProxyType proxyType;
-    private String proxyHost;
-    private int proxyPort;
-
     @Bean
     public WeathBotTelegramBot myWizardTelegramBot(TelegramFacade telegramFacade) {
         DefaultBotOptions options = ApiContext
                 .getInstance(DefaultBotOptions.class);
-
-        options.setProxyHost(proxyHost);
-        options.setProxyPort(proxyPort);
-        options.setProxyType(proxyType);
 
         WeathBotTelegramBot weathBotTelegramBot = new WeathBotTelegramBot(options, telegramFacade);
         weathBotTelegramBot.setBotUserName(botUserName);
