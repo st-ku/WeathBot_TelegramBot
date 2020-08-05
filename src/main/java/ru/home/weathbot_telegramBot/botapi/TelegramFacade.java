@@ -64,6 +64,9 @@ public class TelegramFacade {
             case "Помощь":
                 botState = BotState.SHOW_HELP_MENU;
                 break;
+            case "Изменить город":
+                botState = BotState.ASK_CITY;
+                break;
             default:
                 botState = userDataCache.getUsersCurrentBotState(userId);
                 break;

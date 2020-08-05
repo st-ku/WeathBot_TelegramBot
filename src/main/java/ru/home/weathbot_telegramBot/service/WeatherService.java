@@ -24,6 +24,15 @@ public class WeatherService {
         return restTemplate.getForObject("http://api.openweathermap.org/data/2.5/weather?q="+ city +"&appid=62905a4863e63f8b340c753a854b5c38&units=metric&lang=ru", FullWeather.class);
 
     }
+    public boolean checkIfCityExists(String city) {
+       try {
+           createWeatherObj(city);
+       }
+       catch (Exception e) {
+           return false;
+       }
+       return true;
+    }
 
     public String formatWeather(FullWeather fullWeather) {
         String result = String.format(messagesService.getReplyText("reply.weatherPattern1"),fullWeather.getName(),fullWeather.getMain().getTemp(),fullWeather.getMain().getFeels_like(), Arrays.stream(fullWeather.getWeather()).iterator().next().getDescription());

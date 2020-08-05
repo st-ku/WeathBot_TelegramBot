@@ -8,6 +8,7 @@ import ru.home.weathbot_telegramBot.botapi.BotState;
 import ru.home.weathbot_telegramBot.botapi.InputMessageHandler;
 import ru.home.weathbot_telegramBot.cache.UserDataCache;
 import ru.home.weathbot_telegramBot.model.UserProfileData;
+import ru.home.weathbot_telegramBot.service.MainMenuService;
 import ru.home.weathbot_telegramBot.service.WeatherService;
 import ru.home.weathbot_telegramBot.service.ReplyMessagesService;
 import ru.home.weathbot_telegramBot.service.UsersProfileDataService;
@@ -20,13 +21,14 @@ public class FillingProfileHandler implements InputMessageHandler {
     private ReplyMessagesService messagesService;
     private WeatherService weatherService;
     private UsersProfileDataService profileDataService;
+    private MainMenuService mainMenuService;
 
-    public FillingProfileHandler(UserDataCache userDataCache, ReplyMessagesService messagesService,
-                                 WeatherService weatherService, UsersProfileDataService profileDataService) {
+    public FillingProfileHandler(UserDataCache userDataCache, ReplyMessagesService messagesService, WeatherService weatherService, UsersProfileDataService profileDataService, MainMenuService mainMenuService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.weatherService = weatherService;
         this.profileDataService = profileDataService;
+        this.mainMenuService = mainMenuService;
     }
 
     @Override
@@ -61,6 +63,12 @@ public class FillingProfileHandler implements InputMessageHandler {
         }
 
         if (botState.equals(BotState.ASK_PERIOD)) {
+            if (!weatherService.checkIfCityExists(usersAnswer)) {
+                replyToUser = messagesService.getReplyMessage(chatId, "reply.cityNotFound");
+                userDataCache.setUsersCurrentBotState(userId, BotState.ASK_CITY);
+                userDataCache.saveUserProfileData(userId, profileData);
+                return replyToUser;
+            }
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askPeriod");
             profileData.setCity(usersAnswer);
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
@@ -71,14 +79,12 @@ public class FillingProfileHandler implements InputMessageHandler {
             profileData.setChatId(chatId);
 
             profileDataService.saveUserProfileData(profileData);
-
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
-
-
-            String predictionMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
-
-            replyToUser = new SendMessage(chatId, String.format("%n%s ", predictionMessage));
+            String forecastMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
+            replyToUser = new SendMessage(chatId, String.format("%n%s ", forecastMessage));
+            replyToUser=mainMenuService.getMainMenuMessage(replyToUser);
             replyToUser.setParseMode("HTML");
+
         }
 
         userDataCache.saveUserProfileData(userId, profileData);
