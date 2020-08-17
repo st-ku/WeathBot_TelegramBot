@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import ru.home.weathbot_telegramBot.botapi.BotState;
 
 import java.io.Serializable;
 
@@ -20,4 +21,6 @@ public class UserProfileData implements Serializable {
     String id;
     String city;
     long chatId;
+    BotState botState;
+
 }

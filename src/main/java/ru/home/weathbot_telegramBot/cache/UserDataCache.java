@@ -3,6 +3,7 @@ package ru.home.weathbot_telegramBot.cache;
 import org.springframework.stereotype.Component;
 import ru.home.weathbot_telegramBot.botapi.BotState;
 import ru.home.weathbot_telegramBot.model.UserProfileData;
+import ru.home.weathbot_telegramBot.service.UsersProfileDataService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,27 +16,47 @@ import java.util.Map;
 
 @Component
 public class UserDataCache implements DataCache {
-    private Map<Integer, BotState> usersBotStates = new HashMap<>();
-    private Map<Integer, UserProfileData> usersProfileData = new HashMap<>();
+    private UsersProfileDataService usersProfileDataService;
+    private Map<Long, BotState> usersBotStates = new HashMap<>();
+    private Map<Long, UserProfileData> usersProfileData = new HashMap<>();
+
+    public UserDataCache(UsersProfileDataService usersProfileDataService) {
+        this.usersProfileDataService = usersProfileDataService;
+    }
 
     @Override
-    public void setUsersCurrentBotState(int userId, BotState botState) {
+    public void setUsersCurrentBotState(long userId, BotState botState) {
         usersBotStates.put(userId, botState);
     }
 
     @Override
-    public BotState getUsersCurrentBotState(int userId) {
+    public BotState getUsersCurrentBotState(long userId) {
         BotState botState = usersBotStates.get(userId);
         if (botState == null) {
-            botState = BotState.WELCOME;
+            botState = getUsersCurrentBotStateFromDb(userId);
         }
 
         return botState;
     }
 
+    public BotState getUsersCurrentBotStateFromDb(long userId) {
+        UserProfileData userProfileData = getUserProfileData(userId);
+        if (userProfileData.getBotState() == null) {
+            return  BotState.WELCOME;
+        }
+        return userProfileData.getBotState();
+    }
+
     @Override
-    public UserProfileData getUserProfileData(int userId) {
+    public UserProfileData getUserProfileData(long userId) {
         UserProfileData userProfileData = usersProfileData.get(userId);
+        if (userProfileData == null) {
+            userProfileData=getUserProfileDataFromDb(userId);
+        }
+        return userProfileData;
+    }
+    public UserProfileData getUserProfileDataFromDb(long chatId) {
+        UserProfileData userProfileData = usersProfileDataService.getUserProfileData(chatId);
         if (userProfileData == null) {
             userProfileData = new UserProfileData();
         }
@@ -43,7 +64,8 @@ public class UserDataCache implements DataCache {
     }
 
     @Override
-    public void saveUserProfileData(int userId, UserProfileData userProfileData) {
+    public void saveUserProfileData(long userId, UserProfileData userProfileData) {
         usersProfileData.put(userId, userProfileData);
     }
+
 }

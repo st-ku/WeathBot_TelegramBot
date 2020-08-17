@@ -5,11 +5,11 @@ import ru.home.weathbot_telegramBot.model.UserProfileData;
 
 
 public interface DataCache {
-    void setUsersCurrentBotState(int userId, BotState botState);
+    void setUsersCurrentBotState(long userId, BotState botState);
 
-    BotState getUsersCurrentBotState(int userId);
+    BotState getUsersCurrentBotState(long userId);
 
-    UserProfileData getUserProfileData(int userId);
+    UserProfileData getUserProfileData(long userId);
 
-    void saveUserProfileData(int userId, UserProfileData userProfileData);
+    void saveUserProfileData(long userId, UserProfileData userProfileData);
 }
