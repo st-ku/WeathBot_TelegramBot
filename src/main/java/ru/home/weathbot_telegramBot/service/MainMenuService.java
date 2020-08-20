@@ -23,6 +23,7 @@ public class MainMenuService {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row1 = new KeyboardRow();
+        row1.add(new KeyboardButton("Обновить"));
         row1.add(new KeyboardButton("Изменить город"));
         keyboard.add(row1);
         replyKeyboardMarkup.setKeyboard(keyboard);
