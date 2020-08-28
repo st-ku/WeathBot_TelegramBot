@@ -11,6 +11,11 @@ import java.util.List;
 
 @Service
 public class MainMenuService {
+    private LocaleMessageService localeMessageService;
+
+    public MainMenuService(LocaleMessageService localeMessageService) {
+        this.localeMessageService = localeMessageService;
+    }
 
 
     private ReplyKeyboardMarkup getMainMenuKeyboard() {
@@ -23,8 +28,8 @@ public class MainMenuService {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row1 = new KeyboardRow();
-        row1.add(new KeyboardButton("Обновить"));
-        row1.add(new KeyboardButton("Изменить город"));
+        row1.add(new KeyboardButton(localeMessageService.getMessage("button.update")));
+        row1.add(new KeyboardButton(localeMessageService.getMessage("button.changeCity")));
         keyboard.add(row1);
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;

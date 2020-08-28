@@ -35,10 +35,7 @@ public class BotStateContext {
     private boolean isFillingProfileState(BotState currentState) {
         switch (currentState) {
             case ASK_CITY:
-            case ASK_PERIOD:
-            case SHOW_HELP_MENU:
-            case SHOW_MAIN_MENU:
-            case SHOW_USER_PROFILE:
+            case CHECK_CITY:
             case FILLING_PROFILE:
             case PROFILE_FILLED:
                 return true;

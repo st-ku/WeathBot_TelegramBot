@@ -58,12 +58,6 @@ public class TelegramFacade {
             case "Получить прогноз":
                 botState = BotState.FILLING_PROFILE;
                 break;
-            case "Мой профиль":
-                botState = BotState.SHOW_USER_PROFILE;
-                break;
-            case "Помощь":
-                botState = BotState.SHOW_HELP_MENU;
-                break;
             case "Изменить город":
                 botState = BotState.ASK_CITY;
                 break;

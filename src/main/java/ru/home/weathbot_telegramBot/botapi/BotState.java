@@ -5,12 +5,8 @@ package ru.home.weathbot_telegramBot.botapi;
 
 public enum BotState {
     WELCOME,
-    NO_ANSWER,
     ASK_CITY,
-    ASK_PERIOD,
+    CHECK_CITY,
     FILLING_PROFILE,
     PROFILE_FILLED,
-    SHOW_USER_PROFILE,
-    SHOW_MAIN_MENU,
-    SHOW_HELP_MENU;
 }

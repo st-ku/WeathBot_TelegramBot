@@ -21,6 +21,7 @@ public class BotConfig {
     private String webHookPath;
     private String botUserName;
     private String botToken;
+    private String apiUrl;
 
     @Bean
     public WeathBotTelegramBot myWizardTelegramBot(TelegramFacade telegramFacade) {

@@ -57,21 +57,22 @@ public class FillingProfileHandler implements InputMessageHandler {
 
         if (botState.equals(BotState.ASK_CITY)) {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askCity");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_PERIOD);
+            userDataCache.setUsersCurrentBotState(userId, BotState.CHECK_CITY);
             userDataCache.saveUserProfileData(userId, profileData);
 
         }
 
-        if (botState.equals(BotState.ASK_PERIOD)) {
+        if (botState.equals(BotState.CHECK_CITY)) {
             if (!weatherService.checkIfCityExists(usersAnswer)) {
                 replyToUser = messagesService.getReplyMessage(chatId, "reply.cityNotFound");
                 userDataCache.setUsersCurrentBotState(userId, BotState.ASK_CITY);
                 userDataCache.saveUserProfileData(userId, profileData);
-                return replyToUser;
+
             }
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askPeriod");
+
             profileData.setCity(usersAnswer);
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
+            botState=BotState.PROFILE_FILLED;
         }
 
 
