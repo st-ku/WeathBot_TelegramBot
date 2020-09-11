@@ -37,15 +37,7 @@ public class WeatherService {
         return restTemplate.getForObject(String.format(botConfig.getApiUrl(),city), FullWeather.class);
 
     }
-    public boolean checkIfCityExists(String city) {
-       try {
-           createWeatherObj(city);
-       }
-       catch (Exception e) {
-           return false;
-       }
-       return true;
-    }
+
     @SneakyThrows
     public String formatWeather(FullWeather fullWeather) {
         return String.format(messagesService.getReplyText("reply.weatherPattern1"),fullWeather.getName(),fullWeather.getMain().getTemp(),fullWeather.getMain().getFeels_like(), Arrays.stream(fullWeather.getWeather()).iterator().next().getDescription(),createEmojiByCode(Arrays.stream(fullWeather.getWeather()).iterator().next().getIcon()), fullWeather.getWind().getSpeed());

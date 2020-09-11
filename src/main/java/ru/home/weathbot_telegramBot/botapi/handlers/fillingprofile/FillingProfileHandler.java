@@ -48,6 +48,7 @@ public class FillingProfileHandler implements InputMessageHandler {
         String usersAnswer = inputMsg.getText();
         int userId = inputMsg.getFrom().getId();
         long chatId = inputMsg.getChatId();
+        String forecastMessage="";
 
         UserProfileData profileData = userDataCache.getUserProfileData(userId);
         BotState botState = userDataCache.getUsersCurrentBotState(userId);
@@ -63,13 +64,6 @@ public class FillingProfileHandler implements InputMessageHandler {
         }
 
         if (botState.equals(BotState.CHECK_CITY)) {
-            if (!weatherService.checkIfCityExists(usersAnswer)) {
-                replyToUser = messagesService.getReplyMessage(chatId, "reply.cityNotFound");
-                userDataCache.setUsersCurrentBotState(userId, BotState.ASK_CITY);
-                userDataCache.saveUserProfileData(userId, profileData);
-
-            }
-
             profileData.setCity(usersAnswer);
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
             botState=BotState.PROFILE_FILLED;
@@ -81,7 +75,15 @@ public class FillingProfileHandler implements InputMessageHandler {
             profileData.setBotState(BotState.PROFILE_FILLED);
             profileDataService.saveUserProfileData(profileData);
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
-            String forecastMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
+            try {
+                forecastMessage = weatherService.getWeather(userDataCache.getUserProfileData(userId).getCity());
+            } catch (Exception e) {
+                replyToUser = messagesService.getReplyMessage(chatId, "reply.cityNotFound");
+                userDataCache.setUsersCurrentBotState(userId, BotState.ASK_CITY);
+                userDataCache.saveUserProfileData(userId, profileData);
+                return replyToUser;
+            }
+
             replyToUser = new SendMessage(chatId, String.format("%n%s ", forecastMessage));
             replyToUser=mainMenuService.getMainMenuMessage(replyToUser);
             replyToUser.setParseMode("HTML");
