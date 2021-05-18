@@ -21,4 +21,5 @@
 - Telegram API 4.4.0.2
 - Gradle 
 - Heroku ci cd
+- OpenWeather Api
 
