@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/st-ku/WeathBot_TelegramBot.svg?branch=master)](https://travis-ci.org/st-ku/WeathBot_TelegramBot)
 # WeathBot
 ## Description
-**WeathBot** is a OpenWeatherApi Telegram Bot that can help you get actual information about any city. 
+**WeathBot** is a OpenWeatherApi Telegram Bot that can help you get actual weather information about any city. 
 ## Link
 - <a href="http://t.me/SimplWeathBot">@SimplWeathBot</a> 
 
